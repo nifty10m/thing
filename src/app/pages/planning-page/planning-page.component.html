@@ -1,0 +1,22 @@
+<th-nav-drawer>
+  <ng-container navHeader>{{ (barcamp | async).title }}</ng-container>
+  <ng-container navBody>
+    <th-configurer></th-configurer>
+  </ng-container>
+  <ng-container navFooter></ng-container>
+</th-nav-drawer>
+<div class="container">
+  <div class="days-table" *ngFor="let day of days | async">
+    <span>{{ day | date: 'EEE dd.MM.' }}</span>
+    <div class="rooms-row">
+      <span></span> <!--placeholder span-->
+      <span *ngFor="let room of rooms | async">{{ room }}</span>
+    </div>
+    <div class="times-row" *ngFor="let time of times | async">
+      <div>
+        <p>{{ time.start | date: 'H:mm' }}</p> - <p>{{ time.end | date: 'H:mm' }}</p>
+      </div>
+      <div>Test</div>
+    </div>
+  </div>
+</div>

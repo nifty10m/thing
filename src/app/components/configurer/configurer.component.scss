@@ -1,0 +1,37 @@
+ul {
+    li {
+        display: flex;
+
+        span {
+            flex: 1 1 100%;
+        }
+
+        button {
+            opacity: 0;
+        }
+
+        &:hover button {
+            opacity: 1;
+            transition: 0.3s ease;
+        }
+    }
+}
+
+form {
+    margin-bottom: 20px;
+    width: 100%;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    input, select {
+        flex: 1 1 100%;
+        margin-right: 20px;
+    }
+
+    input {
+        width: 50px;
+    }
+}

@@ -1,0 +1,32 @@
+:host {
+    display: flex;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    padding: 20px;
+
+    .days-table {
+        flex: 1 1 100%;
+        display: flex;
+        flex-direction: column;
+
+        &:nth-of-type(n+1) {
+            margin-left: 20px;
+        }
+
+        & > span {
+            text-align: center;
+        }
+    }
+
+    .rooms-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .times-row {
+        display: flex;
+    }
+}

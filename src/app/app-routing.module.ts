@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfigurationPageComponent } from './pages/configuration-page/configuration-page.component';
+import { PlanningPageComponent } from './pages/planning-page/planning-page.component';
 import { FrontPageComponent } from './pages/front-page/front-page.component';
 import { BarcampService } from './services/barcamp.service';
 
@@ -13,8 +13,8 @@ const routes: Routes = [
         }
     },
     {
-        path: 'configure',
-        component: ConfigurationPageComponent,
+        path: 'planning',
+        component: PlanningPageComponent,
     },
 ];
 

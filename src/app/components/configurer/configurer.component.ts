@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Select, Store } from '@ngxs/store';
 import { Message, StompSubscription } from '@stomp/stompjs';
@@ -38,9 +38,10 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     topicSubscription: StompSubscription;
 
-    topics: string[] = ['test'];
+    topics: string[] = [];
 
     constructor(private fb: FormBuilder,
+                private changeDetector: ChangeDetectorRef,
                 private websocketService: WebsocketService,
                 private store: Store) {
         this.dayForm = fb.group({
@@ -64,10 +65,18 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.websocketService.subscribeToTopics((message: Message) => {
-            console.log('received message', message);
-            this.topics.push(message.body);
-        })
+        this.websocketService.getTopics(
+            (topics: string[]) => {
+                console.log('received initial', topics);
+                this.topics = topics;
+                this.changeDetector.detectChanges();
+            },
+            (topic: string) => {
+                console.log('received stream', topic);
+                this.topics.push(topic);
+                this.changeDetector.detectChanges();
+            }
+        );
     }
 
     ngOnDestroy(): void {

@@ -26,6 +26,19 @@
   <ng-template #topicList>
     <div>
       <h4>Themen</h4>
+      <ul>
+        <li *ngFor="let topic of topics">
+          {{ topic }}
+        </li>
+      </ul>
+      <form [formGroup]="topicForm" (submit)="addTopic()">
+        <div>
+          <input type="text" formControlName="topicCtrl">
+          <button type="submit" [disabled]="topicForm.invalid">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+      </form>
     </div>
   </ng-template>
 </div>

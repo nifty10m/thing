@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Select, Store } from '@ngxs/store';
-import { HTML5_FMT, Moment, now, parseZone, utc } from 'moment';
+import { Message, StompSubscription } from '@stomp/stompjs';
+import { Moment, utc } from 'moment';
 import { Observable } from 'rxjs/internal/Observable';
 import { Barcamp } from '../../models/barcamp';
 import { SlotType } from '../../models/slot-type';
 import { Time } from '../../models/time';
-import { AddDay, AddRoom, AddTimeSlot } from '../../state/planning.actions';
+import { WebsocketService } from '../../services/websocket.service';
+import { AddDay } from '../../state/planning.actions';
 import { PlanningState } from '../../state/planning.state';
 
 @Component({
@@ -14,7 +16,7 @@ import { PlanningState } from '../../state/planning.state';
     templateUrl: './configurer.component.html',
     styleUrls: ['./configurer.component.scss']
 })
-export class ConfigurerComponent {
+export class ConfigurerComponent implements OnInit, OnDestroy {
 
     SlotType = SlotType;
 
@@ -32,22 +34,20 @@ export class ConfigurerComponent {
 
     dayForm: FormGroup;
 
-    roomForm: FormGroup;
+    topicForm: FormGroup;
 
-    timeForm: FormGroup;
+    topicSubscription: StompSubscription;
+
+    topics: string[] = ['test'];
 
     constructor(private fb: FormBuilder,
+                private websocketService: WebsocketService,
                 private store: Store) {
         this.dayForm = fb.group({
             dayCtrl: new FormControl('', [Validators.required])
         });
-        this.roomForm = fb.group({
-            roomCtrl: new FormControl('', [Validators.required])
-        });
-        this.timeForm = fb.group({
-            startCtrl: new FormControl('00:00', [Validators.required]),
-            endCtrl: new FormControl('01:00', [Validators.required]),
-            typeCtrl: new FormControl(SlotType.TOPIC, [Validators.required]),
+        this.topicForm = fb.group({
+            topicCtrl: new FormControl('', [Validators.required])
         });
     }
 
@@ -55,6 +55,23 @@ export class ConfigurerComponent {
         const day = utc(this.dayForm.get('dayCtrl').value);
         this.store.dispatch(new AddDay(day));
         this.dayForm.setValue({ dayCtrl: day.clone().add(1, 'day').format('YYYY-MM-DD') });
+    }
+
+    addTopic() {
+        const topic = this.topicForm.get('topicCtrl').value;
+        console.log('test', topic);
+        this.websocketService.sendTopic(topic);
+    }
+
+    ngOnInit(): void {
+        this.websocketService.subscribeToTopics((message: Message) => {
+            console.log('received message', message);
+            this.topics.push(message.body);
+        })
+    }
+
+    ngOnDestroy(): void {
+        this.topicSubscription.unsubscribe();
     }
 
 }

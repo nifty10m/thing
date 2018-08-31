@@ -1,3 +1,9 @@
 <h1>Welcome to Thing</h1>
 <p>The Barcamp planning tool</p>
-<button routerLink="/setup">Create a barcamp now</button>
+<ul>
+    <li *ngFor="let barcamp of barcamps">
+        <span>{{ barcamp.title }}</span>
+        <br>
+        <span>by {{ barcamp.organizer }}</span>
+    </li>
+</ul>

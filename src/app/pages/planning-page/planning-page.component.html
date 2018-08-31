@@ -1,21 +1,22 @@
+<th-nav-drawer>
+  <ng-container navHeader>{{ (barcamp | async).title }}</ng-container>
+  <ng-container navBody>
+    <th-configurer></th-configurer>
+  </ng-container>
+  <ng-container navFooter></ng-container>
+</th-nav-drawer>
 <div class="container">
-  <th-planning-header>{{ eventName }}</th-planning-header>
-  <th-tab-control [labels]="days" (tabSelect)="onTabSelect($event)"></th-tab-control>
-  <th-topic-list></th-topic-list>
-  <div class="row">
-    <th-timetable-entry>
-      <th-timetable-label>Slots</th-timetable-label>
-    </th-timetable-entry>
-    <th-timetable-entry *ngFor="let room of rooms">
-      <th-timetable-label>{{ room }}</th-timetable-label>
-    </th-timetable-entry>
-  </div>
-  <div class="row" *ngFor="let slot of slots">
-    <th-timetable-entry>
-      <th-timetable-label>{{ slot }}</th-timetable-label>
-    </th-timetable-entry>
-    <th-timetable-entry *ngFor="let topic of topics">
-      <th-timetable-topic>{{ topic }}</th-timetable-topic>
-    </th-timetable-entry>
+  <div class="days-table" *ngFor="let day of days | async">
+    <span>{{ day | date: 'EEE dd.MM.' }}</span>
+    <div class="rooms-row">
+      <span></span> <!--placeholder span-->
+      <span class="table-column" *ngFor="let room of rooms | async">{{ room }}</span>
+    </div>
+    <div class="times-row" *ngFor="let time of times | async">
+      <div class="table-column">
+        <p>{{ time.start | date: 'H:mm' }}</p> - <p>{{ time.end | date: 'H:mm' }}</p>
+      </div>
+      <div class="table-column">Test</div>
+    </div>
   </div>
 </div>

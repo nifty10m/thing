@@ -1,1 +1,36 @@
+:host {
+    display: flex;
+}
 
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    width: calc(100vw - 300px);
+    padding: 20px;
+    overflow-x: auto;
+
+    .days-table {
+        display: flex;
+        flex-direction: column;
+        min-width: 420px;
+
+        & > span {
+            text-align: center;
+        }
+
+        .table-column {
+            width: 200px;
+            border: 1px solid black;
+        }
+    }
+
+    .rooms-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .times-row {
+        display: flex;
+    }
+}

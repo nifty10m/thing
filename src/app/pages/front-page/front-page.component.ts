@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Barcamp } from '../../models/barcamp';
 
 @Component({
-  selector: 'th-front-page',
-  templateUrl: './front-page.component.html',
-  styleUrls: ['./front-page.component.scss']
+    selector: 'th-front-page',
+    templateUrl: './front-page.component.html',
+    styleUrls: ['./front-page.component.scss']
 })
-export class FrontPageComponent implements OnInit {
+export class FrontPageComponent {
 
-  constructor() { }
+    barcamps: Barcamp[];
 
-  ngOnInit() {
-  }
+    constructor(private route: ActivatedRoute) {
+        this.barcamps = route.snapshot.data.barcamps;
+    }
 
 }

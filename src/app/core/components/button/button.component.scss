@@ -1,0 +1,22 @@
+:host {
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0 20px;
+    line-height: 34px;
+    cursor: pointer;
+
+    &[full-width] {
+        width: 100%;
+    }
+
+    &[disabled] {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    &[primary] {
+        background: #3498db;
+        color: white;
+    }
+}

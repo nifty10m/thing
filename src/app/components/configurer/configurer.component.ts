@@ -52,20 +52,9 @@ export class ConfigurerComponent {
     }
 
     addDay() {
-        this.store.dispatch(new AddDay(utc(this.dayForm.get('dayCtrl').value)));
-    }
-
-    addRoom() {
-        this.store.dispatch(new AddRoom(this.roomForm.get('roomCtrl').value));
-    }
-
-    addTime() {
-        console.log(this.timeForm.get('startCtrl').value);
-        const start = parseZone(this.timeForm.get('startCtrl').value + '+00:00', HTML5_FMT.TIME);
-        const end = parseZone(this.timeForm.get('endCtrl').value + '+00:00', HTML5_FMT.TIME);
-        const type = this.timeForm.get('typeCtrl').value;
-        console.log(start, end, type);
-        this.store.dispatch(new AddTimeSlot({ start, end, type }));
+        const day = utc(this.dayForm.get('dayCtrl').value);
+        this.store.dispatch(new AddDay(day));
+        this.dayForm.setValue({ dayCtrl: day.clone().add(1, 'day').format('YYYY-MM-DD') });
     }
 
 }

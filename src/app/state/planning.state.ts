@@ -23,8 +23,8 @@ export interface PlanningStateModel {
             organizer: 'ASD',
             participants: [],
         },
-        days: [utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')],
-        rooms: ['Raum 1', 'Raum 2', 'Raum 3'],
+        days: [utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
+        rooms: [], // 'Raum 1', 'Raum 2', 'Raum 3'
         times: [],
         slots: []
     }

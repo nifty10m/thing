@@ -28,7 +28,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/mukta.scss",
+              "src/mukta.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {

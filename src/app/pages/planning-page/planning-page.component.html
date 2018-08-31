@@ -10,13 +10,13 @@
     <span>{{ day | date: 'EEE dd.MM.' }}</span>
     <div class="rooms-row">
       <span></span> <!--placeholder span-->
-      <span *ngFor="let room of rooms | async">{{ room }}</span>
+      <span class="table-column" *ngFor="let room of rooms | async">{{ room }}</span>
     </div>
     <div class="times-row" *ngFor="let time of times | async">
-      <div>
+      <div class="table-column">
         <p>{{ time.start | date: 'H:mm' }}</p> - <p>{{ time.end | date: 'H:mm' }}</p>
       </div>
-      <div>Test</div>
+      <div class="table-column">Test</div>
     </div>
   </div>
 </div>

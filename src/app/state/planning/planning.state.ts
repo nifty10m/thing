@@ -1,13 +1,16 @@
 import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
 import { groupBy } from 'lodash-es';
 import { Moment, utc } from 'moment';
-import { Barcamp } from '../models/barcamp';
-import { Slot } from '../models/slot';
-import { Time } from '../models/time';
-import { AddDay, AddRoom, AddTimeSlot } from './planning.actions';
+import { Barcamp } from '../../models/barcamp';
+import { Slot } from '../../models/slot';
+import { Time } from '../../models/time';
+import { Topic } from '../../models/topic';
+import { StompSend } from '../stomp/stomp.actions';
+import { AddDay, AddRoom, AddTimeSlot, AddTopic } from './planning.actions';
 
 export interface PlanningStateModel {
     barcamp: Barcamp;
+    topics: Topic[];
     days: Moment[];
     rooms: string[];
     times: Time[];
@@ -23,6 +26,7 @@ export interface PlanningStateModel {
             organizer: 'ASD',
             participants: [],
         },
+        topics: [],
         days: [utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
         rooms: [], // 'Raum 1', 'Raum 2', 'Raum 3'
         times: [],
@@ -34,6 +38,11 @@ export class PlanningState {
     @Selector()
     static barcamp(state: PlanningStateModel) {
         return state.barcamp;
+    }
+
+    @Selector()
+    static topics(state: PlanningStateModel) {
+        return state.topics;
     }
 
     @Selector()
@@ -58,6 +67,12 @@ export class PlanningState {
                 (slot: Slot) => slot.time.start.format('H:mm')
             );
         });
+    }
+
+    @Action(AddTopic)
+    addTopic({ dispatch, getState, patchState }: StateContext<PlanningStateModel>, action: AddTopic) {
+        patchState({ topics: [...getState().topics, action.payload] });
+        return dispatch(new StompSend({ queueName: '/topics', action }));
     }
 
     @Action(AddDay)

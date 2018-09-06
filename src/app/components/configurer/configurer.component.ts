@@ -1,15 +1,16 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Select, Store } from '@ngxs/store';
-import { Message, StompSubscription } from '@stomp/stompjs';
+import { StompSubscription } from '@stomp/stompjs';
 import { Moment, utc } from 'moment';
 import { Observable } from 'rxjs/internal/Observable';
 import { Barcamp } from '../../models/barcamp';
 import { SlotType } from '../../models/slot-type';
 import { Time } from '../../models/time';
-import { WebsocketService } from '../../services/websocket.service';
-import { AddDay } from '../../state/planning.actions';
-import { PlanningState } from '../../state/planning.state';
+import { Topic } from '../../models/topic';
+import { AddDay, AddTopic } from '../../state/planning/planning.actions';
+import { PlanningState } from '../../state/planning/planning.state';
+import { StompSubscribe } from '../../state/stomp/stomp.actions';
 
 @Component({
     selector: 'th-configurer',
@@ -22,6 +23,9 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     @Select(PlanningState.barcamp)
     barcamp: Observable<Barcamp>;
+
+    @Select(PlanningState.topics)
+    topics: Observable<Topic[]>;
 
     @Select(PlanningState.days)
     days: Observable<Moment>;
@@ -38,11 +42,8 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     topicSubscription: StompSubscription;
 
-    topics: string[] = [];
-
     constructor(private fb: FormBuilder,
                 private changeDetector: ChangeDetectorRef,
-                private websocketService: WebsocketService,
                 private store: Store) {
         this.dayForm = fb.group({
             dayCtrl: new FormControl('', [Validators.required])
@@ -60,26 +61,15 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     addTopic() {
         const topic = this.topicForm.get('topicCtrl').value;
-        console.log('test', topic);
-        this.websocketService.sendTopic(topic);
+        this.store.dispatch(new AddTopic({ title: topic, pilot: 'SRO', votes: [] }));
     }
 
-    ngOnInit(): void {
-        this.websocketService.getTopics(
-            (topics: string[]) => {
-                console.log('received initial', topics);
-                this.topics = topics;
-                this.changeDetector.detectChanges();
-            },
-            (topic: string) => {
-                console.log('received stream', topic);
-                this.topics.push(topic);
-                this.changeDetector.detectChanges();
-            }
-        );
+    ngOnInit() {
+        this.store.dispatch(new StompSubscribe({ queueName: '/topics/initial' }));
+        this.store.dispatch(new StompSubscribe({ queueName: '/topics/stream' }));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy() {
         this.topicSubscription.unsubscribe();
     }
 

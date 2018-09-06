@@ -27,8 +27,8 @@
     <div>
       <h4>Themen</h4>
       <ul>
-        <li *ngFor="let topic of topics">
-          {{ topic }}
+        <li *ngFor="let topic of topics | async">
+          {{ topic.title }}
         </li>
       </ul>
       <form [formGroup]="topicForm" (submit)="addTopic()">

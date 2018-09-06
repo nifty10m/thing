@@ -1,5 +1,20 @@
 import { Moment } from 'moment';
-import { Time } from '../models/time';
+import { Time } from '../../models/time';
+import { Topic } from '../../models/topic';
+
+export class AddTopic {
+    static readonly type = '[Planning] Add Topic';
+
+    constructor(public payload: Topic) {
+    }
+}
+
+export class RemoveTopic {
+    static readonly type = '[Planning] Remove Topic';
+
+    constructor(public payload: Topic) {
+    }
+}
 
 export class AddDay {
     static readonly type = '[Planning] Add Day';

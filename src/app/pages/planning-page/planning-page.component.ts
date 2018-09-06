@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Moment, utc } from 'moment';
 import { Observable } from 'rxjs/internal/Observable';
 import { Barcamp } from '../../models/barcamp';
 import { SlotType } from '../../models/slot-type';
 import { Time } from '../../models/time';
-import { AddDay, AddRoom, AddTimeSlot } from '../../state/planning.actions';
-import { PlanningState } from '../../state/planning.state';
+import { AddDay, AddRoom, AddTimeSlot } from '../../state/planning/planning.actions';
+import { PlanningState } from '../../state/planning/planning.state';
 
 @Component({
     selector: 'th-configuration-page',

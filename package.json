@@ -23,14 +23,12 @@
     "@ngxs/devtools-plugin": "^3.2.0",
     "@ngxs/storage-plugin": "^3.2.0",
     "@ngxs/store": "^3.2.0",
-    "@stomp/stompjs": "^4.0.7",
+    "@stomp/ng2-stompjs": "^6.0.1",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "lodash-es": "^4.17.10",
     "moment": "^2.22.2",
-    "rxjs": "^6.3.0",
-    "rxjs-compat": "^6.3.0",
-    "websocket": "^1.0.26",
+    "rxjs": "^6.0.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

@@ -5,7 +5,6 @@ import { Barcamp } from '../../models/barcamp';
 import { Slot } from '../../models/slot';
 import { Time } from '../../models/time';
 import { Topic } from '../../models/topic';
-import { StompSend } from '../stomp/stomp.actions';
 import { AddDay, AddRoom, AddTimeSlot, AddTopic } from './planning.actions';
 
 export interface PlanningStateModel {
@@ -72,7 +71,6 @@ export class PlanningState {
     @Action(AddTopic)
     addTopic({ dispatch, getState, patchState }: StateContext<PlanningStateModel>, action: AddTopic) {
         patchState({ topics: [...getState().topics, action.payload] });
-        return dispatch(new StompSend({ queueName: '/topics', action }));
     }
 
     @Action(AddDay)

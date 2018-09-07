@@ -1,7 +1,9 @@
 import { Moment } from 'moment';
 import { Time } from '../../models/time';
 import { Topic } from '../../models/topic';
+import { Broadcast } from '../stomp/stomp.plugin';
 
+@Broadcast('/topics')
 export class AddTopic {
     static readonly type = '[Planning] Add Topic';
 

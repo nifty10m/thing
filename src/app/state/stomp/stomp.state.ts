@@ -23,6 +23,8 @@ export interface StompStateModel {
 })
 export class StompState {
 
+    private readonly _uid = (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
+
     private readonly defaultConfig: StompConfig = {
         url: '',
         headers: {},
@@ -75,7 +77,6 @@ export class StompState {
         this._subscriptions[queueName] = this.stompService.subscribe(queueName, headers)
             .subscribe((msg: Message) => {
                 dispatch(new StompMessage(JSON.parse(msg.body)));
-                console.log(msg.headers);
             });
     }
 
@@ -94,14 +95,15 @@ export class StompState {
     @Action(StompSend)
     send(ctx: StateContext<StompStateModel>, { payload: { queueName, action, headers } }: StompSend) {
         const body = { type: action.constructor.type, ...action };
-        console.log('sending', body);
         this.stompService.publish(queueName, JSON.stringify(body), headers);
     }
 
     @Action(StompMessage)
     messageReceived({ dispatch }: StateContext<StompStateModel>, { payload }: StompMessage) {
-        console.log('received', payload);
-        payload.remote = true;
-        dispatch(payload);
+        if (payload && payload.type) {
+            dispatch(payload);
+        } else {
+            console.warn('Can not handle stomp messages without a payload or action type');
+        }
     }
 }

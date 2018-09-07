@@ -15,6 +15,7 @@ import { FrontPageComponent } from './pages/front-page/front-page.component';
 import { PlanningPageComponent } from './pages/planning-page/planning-page.component';
 import { BarcampService } from './services/barcamp.service';
 import { PlanningState } from './state/planning/planning.state';
+import { NgxsStompPluginModule } from './state/stomp/stomp.plugin';
 import { StompState } from './state/stomp/stomp.state';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { StompState } from './state/stomp/stomp.state';
         AppRoutingModule,
         NgxsModule.forRoot([PlanningState, StompState]),
         NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
+        NgxsStompPluginModule.forRoot(),
         CoreModule,
         ReactiveFormsModule,
     ],

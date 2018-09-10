@@ -1,0 +1,21 @@
+<div class="container">
+  <h4 class="ellipsis">
+    {{ topic.title }}
+  </h4>
+  <p class="ellipsis">
+    {{ topic.description }}
+  </p>
+  <div class="footer">
+    <span class="avatar">
+      {{ topic.pilot }}
+    </span>
+    <div>
+      <button (click)="remove()">
+        <i class="fa fa-trash"></i>
+      </button>
+      <span>
+        {{ topic.votes }}
+      </span>
+    </div>
+  </div>
+</div>

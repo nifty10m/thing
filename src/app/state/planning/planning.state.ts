@@ -25,7 +25,7 @@ export interface PlanningStateModel {
             organizer: 'ASD',
             participants: [],
         },
-        topics: [{ title: 'Very long title, that possibly wraps', pilot: 'SRO', votes: [], description: 'This is just a test topic.' }],
+        topics: [],
         days: [utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
         rooms: [], // 'Raum 1', 'Raum 2', 'Raum 3'
         times: [],

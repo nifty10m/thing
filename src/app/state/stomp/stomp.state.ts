@@ -100,10 +100,19 @@ export class StompState {
 
     @Action(StompMessage)
     messageReceived({ dispatch }: StateContext<StompStateModel>, { payload }: StompMessage) {
-        if (payload && payload.type) {
-            dispatch(payload);
+        if (!payload) {
+            console.warn('Can not handle stomp messages without a payload');
+        }
+
+        const actions = [];
+        if (payload.type) {
+            actions.push(payload);
+        } else if (typeof payload === 'object') {
+            actions.push(...Object.values(payload).map((serializedAction: string) => JSON.parse(serializedAction)));
         } else {
             console.warn('Can not handle stomp messages without a payload or action type');
         }
+        actions.filter((action: any) => action.type)
+            .forEach((action: any) => dispatch(action));
     }
 }

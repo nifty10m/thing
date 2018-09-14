@@ -26,11 +26,6 @@
   <ng-template #topicList>
     <div>
       <h4>Themen</h4>
-      <ul>
-        <li *ngFor="let topic of topics | async">
-          {{ topic.title }}
-        </li>
-      </ul>
       <form [formGroup]="topicForm" (submit)="addTopic()">
         <div>
           <input type="text" formControlName="topicCtrl">
@@ -39,6 +34,13 @@
           </button>
         </div>
       </form>
+      <ul>
+        <li *ngFor="let topic of topics | async">
+          <th-topic-card [topic]="topic"
+                         (delete)="removeTopic($event)">
+          </th-topic-card>
+        </li>
+      </ul>
     </div>
   </ng-template>
 </div>

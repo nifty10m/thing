@@ -8,7 +8,7 @@ import { Barcamp } from '../../models/barcamp';
 import { SlotType } from '../../models/slot-type';
 import { Time } from '../../models/time';
 import { Topic } from '../../models/topic';
-import { AddDay, AddTopic } from '../../state/planning/planning.actions';
+import { AddDay, AddTopic, RemoveTopic } from '../../state/planning/planning.actions';
 import { PlanningState } from '../../state/planning/planning.state';
 import { StompSubscribe } from '../../state/stomp/stomp.actions';
 
@@ -62,6 +62,10 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
     addTopic() {
         const topic = this.topicForm.get('topicCtrl').value;
         this.store.dispatch(new AddTopic({ title: topic, pilot: 'SRO', votes: [] }));
+    }
+
+    removeTopic(topic: Topic) {
+        this.store.dispatch(new RemoveTopic(topic));
     }
 
     ngOnInit() {

@@ -5,7 +5,7 @@ import { Barcamp } from '../../models/barcamp';
 import { Slot } from '../../models/slot';
 import { Time } from '../../models/time';
 import { Topic } from '../../models/topic';
-import { AddDay, AddRoom, AddTimeSlot, AddTopic } from './planning.actions';
+import { AddDay, AddRoom, AddTimeSlot, AddTopic, RemoveTopic } from './planning.actions';
 
 export interface PlanningStateModel {
     barcamp: Barcamp;
@@ -25,7 +25,7 @@ export interface PlanningStateModel {
             organizer: 'ASD',
             participants: [],
         },
-        topics: [],
+        topics: [{ title: 'Very long title, that possibly wraps', pilot: 'SRO', votes: [], description: 'This is just a test topic.' }],
         days: [utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
         rooms: [], // 'Raum 1', 'Raum 2', 'Raum 3'
         times: [],
@@ -69,8 +69,13 @@ export class PlanningState {
     }
 
     @Action(AddTopic)
-    addTopic({ dispatch, getState, patchState }: StateContext<PlanningStateModel>, action: AddTopic) {
+    addTopic({ getState, patchState }: StateContext<PlanningStateModel>, action: AddTopic) {
         patchState({ topics: [...getState().topics, action.payload] });
+    }
+
+    @Action(RemoveTopic)
+    removeTopic({ getState, patchState }: StateContext<PlanningStateModel>, { payload }: RemoveTopic) {
+        patchState({ topics: getState().topics.filter((topic: Topic) => topic.title !== payload.title) });
     }
 
     @Action(AddDay)

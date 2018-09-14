@@ -11,6 +11,7 @@ export class AddTopic {
     }
 }
 
+@Broadcast('/topics')
 export class RemoveTopic {
     static readonly type = '[Planning] Remove Topic';
 

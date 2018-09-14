@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConfigurerComponent } from './components/configurer/configurer.component';
 import { NavDrawerComponent } from './components/nav-drawer/nav-drawer.component';
+import { TopicCardComponent } from './components/topic-card/topic-card.component';
 import { CoreModule } from './core/core.module';
 import { FrontPageComponent } from './pages/front-page/front-page.component';
 import { PlanningPageComponent } from './pages/planning-page/planning-page.component';
@@ -25,6 +26,7 @@ import { StompState } from './state/stomp/stomp.state';
         PlanningPageComponent,
         NavDrawerComponent,
         ConfigurerComponent,
+        TopicCardComponent,
     ],
     imports: [
         BrowserModule,

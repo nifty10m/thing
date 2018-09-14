@@ -19,6 +19,7 @@ export class RemoveTopic {
     }
 }
 
+@Broadcast('/topics')
 export class AddDay {
     static readonly type = '[Planning] Add Day';
 
@@ -33,6 +34,7 @@ export class RemoveDay {
     }
 }
 
+@Broadcast('/topics')
 export class AddRoom {
     static readonly type = '[Planning] Add Room';
 
@@ -47,6 +49,7 @@ export class RemoveRoom {
     }
 }
 
+@Broadcast('/topics')
 export class AddTimeSlot {
     static readonly type = '[Planning] Add Timeslot';
 

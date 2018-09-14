@@ -20,15 +20,15 @@ export interface PlanningStateModel {
     name: 'planning',
     defaults: {
         barcamp: {
-            id: '750102fb-9386-476a-9b1a-0ae2b83a1e33',
+            id: '750102fb-9386-476a-9b1a-0a2b83a1e33',
             title: 'Thing Q3',
             organizer: 'ASD',
             participants: [],
         },
         topics: [],
-        days: [utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
+        days: [], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
         rooms: [], // 'Raum 1', 'Raum 2', 'Raum 3'
-        times: [],
+        times: [], // {start: utc('10:00', 'hh:mm'), end: utc('11:00', 'hh:mm'), type: SlotType.TOPIC}
         slots: []
     }
 })
@@ -46,7 +46,7 @@ export class PlanningState {
 
     @Selector()
     static days(state: PlanningStateModel) {
-        return state.days;
+        return state.days.sort((day1, day2) => day1.diff(day2));
     }
 
     @Selector()
@@ -81,7 +81,8 @@ export class PlanningState {
     @Action(AddDay)
     addDay({ getState, patchState }: StateContext<PlanningStateModel>, { payload }: AddDay) {
         const { days, rooms, times, slots } = getState();
-        if (days.some((day: Moment) => day.isSame(payload, 'day'))) {
+        const newDay = typeof payload === 'string' ? utc(payload) : payload;
+        if (days.some((day: Moment) => day.isSame(newDay, 'day'))) {
             throw new Error('This day already exists');
         }
 
@@ -89,7 +90,7 @@ export class PlanningState {
             this.createMissingSlotsForDay(slots, rooms, times, payload);
         }
 
-        patchState({ days: [...days, payload], slots: [...slots] });
+        patchState({ days: [...days, newDay], slots: [...slots] });
     }
 
     @Action(AddRoom)

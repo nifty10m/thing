@@ -42,6 +42,8 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     topicSubscription: StompSubscription;
 
+    configuredDays: Moment[] = [];
+
     constructor(private fb: FormBuilder,
                 private changeDetector: ChangeDetectorRef,
                 private store: Store) {
@@ -53,10 +55,23 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
         });
     }
 
+    ngOnInit() {
+        this.store.dispatch(new StompSubscribe({ queueName: '/topics/initial' }));
+        this.store.dispatch(new StompSubscribe({ queueName: '/topics/stream' }));
+    }
+
+    ngOnDestroy() {
+        this.topicSubscription.unsubscribe();
+    }
+
     addDay() {
         const day = utc(this.dayForm.get('dayCtrl').value);
-        this.store.dispatch(new AddDay(day));
+        this.configuredDays.push(day);
         this.dayForm.setValue({ dayCtrl: day.clone().add(1, 'day').format('YYYY-MM-DD') });
+    }
+
+    submitConfiguration() {
+        this.configuredDays.forEach((day: Moment) => this.store.dispatch(new AddDay(day)));
     }
 
     addTopic() {
@@ -66,15 +81,6 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     removeTopic(topic: Topic) {
         this.store.dispatch(new RemoveTopic(topic));
-    }
-
-    ngOnInit() {
-        this.store.dispatch(new StompSubscribe({ queueName: '/topics/initial' }));
-        this.store.dispatch(new StompSubscribe({ queueName: '/topics/stream' }));
-    }
-
-    ngOnDestroy() {
-        this.topicSubscription.unsubscribe();
     }
 
 }

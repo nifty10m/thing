@@ -10,27 +10,26 @@
     padding: 20px;
     overflow-x: auto;
 
-    .days-table {
-        display: flex;
-        flex-direction: column;
-        min-width: 420px;
+    table {
+        border-collapse: collapse;
+        margin-right: 40px;
 
-        & > span {
-            text-align: center;
-        }
-
-        .table-column {
-            width: 200px;
+        th,
+        td {
+            min-width: 300px;
+            width: 300px;
             border: 1px solid black;
+
+            &:first-child {
+                width: 100px;
+                min-width: 100px;
+                text-align: center;
+            }
         }
-    }
 
-    .rooms-row {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .times-row {
-        display: flex;
+        th:last-of-type {
+            min-width: 0;
+            width: auto;
+        }
     }
 }

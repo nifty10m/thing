@@ -1,46 +1,18 @@
 <div class="configurer-container">
-  <div *ngIf="!(days | async).length; else topicList">
-    <p class="intro-text">
-      Starte mit der Planung deines Barcamps indem du zuerst den Zeitraum festlegst.
-    </p>
-    <h4>Zeitraum</h4>
-    <ul>
-      <li *ngFor="let day of days | async">
-        <span>{{ day | date: 'dd.MM. EEEE' }}</span>
-        <button>
-          <i class="fa fa-trash"></i>
-        </button>
-      </li>
-    </ul>
-    <form [formGroup]="dayForm" (submit)="addDay()">
-      <div>
-        <input type="date" formControlName="dayCtrl">
-        <button type="submit" [disabled]="dayForm.invalid">
-          <i class="fa fa-plus"></i>
-        </button>
-      </div>
-    </form>
-    <button primary full-width>Festlegen</button>
-  </div>
-
-  <ng-template #topicList>
+  <h4>Themen</h4>
+  <form [formGroup]="topicForm" (submit)="addTopic()">
     <div>
-      <h4>Themen</h4>
-      <form [formGroup]="topicForm" (submit)="addTopic()">
-        <div>
-          <input type="text" formControlName="topicCtrl">
-          <button type="submit" [disabled]="topicForm.invalid">
-            <i class="fa fa-plus"></i>
-          </button>
-        </div>
-      </form>
-      <ul>
-        <li *ngFor="let topic of topics | async">
-          <th-topic-card [topic]="topic"
-                         (delete)="removeTopic($event)">
-          </th-topic-card>
-        </li>
-      </ul>
+      <input type="text" formControlName="topicCtrl">
+      <button type="submit" [disabled]="topicForm.invalid">
+        <i class="fa fa-plus"></i>
+      </button>
     </div>
-  </ng-template>
+  </form>
+  <ul>
+    <li *ngFor="let topic of topics | async">
+      <th-topic-card [topic]="topic"
+                     (delete)="removeTopic($event)">
+      </th-topic-card>
+    </li>
+  </ul>
 </div>

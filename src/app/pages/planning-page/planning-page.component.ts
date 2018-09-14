@@ -38,7 +38,7 @@ export class PlanningPageComponent {
     }
 
     addRoom() {
-        this.store.dispatch(new AddRoom('Testroom'));
+        this.store.dispatch(new AddRoom(`Room ${(Math.random() * 10 % 10).toFixed(0)}`));
     }
 
     addTime() {

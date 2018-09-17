@@ -1,13 +1,15 @@
 import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
 import { groupBy } from 'lodash-es';
 import { Moment, utc } from 'moment';
-import { Barcamp } from '../models/barcamp';
-import { Slot } from '../models/slot';
-import { Time } from '../models/time';
-import { AddDay, AddRoom, AddTimeSlot } from './planning.actions';
+import { Barcamp } from '../../models/barcamp';
+import { Slot } from '../../models/slot';
+import { Time } from '../../models/time';
+import { Topic } from '../../models/topic';
+import { AddDay, AddRoom, AddTimeSlot, AddTopic, RemoveTopic } from './planning.actions';
 
 export interface PlanningStateModel {
     barcamp: Barcamp;
+    topics: Topic[];
     days: Moment[];
     rooms: string[];
     times: Time[];
@@ -18,14 +20,15 @@ export interface PlanningStateModel {
     name: 'planning',
     defaults: {
         barcamp: {
-            id: '750102fb-9386-476a-9b1a-0ae2b83a1e33',
+            id: '750102fb-9386-476a-9b1a-0a2b83a1e33',
             title: 'Thing Q3',
             organizer: 'ASD',
             participants: [],
         },
-        days: [utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
+        topics: [],
+        days: [], // utc('2018-08-01'), utc('2018-08-02'), utc('2018-08-03')
         rooms: [], // 'Raum 1', 'Raum 2', 'Raum 3'
-        times: [],
+        times: [], // {start: utc('10:00', 'hh:mm'), end: utc('11:00', 'hh:mm'), type: SlotType.TOPIC}
         slots: []
     }
 })
@@ -37,8 +40,13 @@ export class PlanningState {
     }
 
     @Selector()
+    static topics(state: PlanningStateModel) {
+        return state.topics;
+    }
+
+    @Selector()
     static days(state: PlanningStateModel) {
-        return state.days;
+        return state.days.sort((day1, day2) => day1.diff(day2));
     }
 
     @Selector()
@@ -60,10 +68,21 @@ export class PlanningState {
         });
     }
 
+    @Action(AddTopic)
+    addTopic({ getState, patchState }: StateContext<PlanningStateModel>, action: AddTopic) {
+        patchState({ topics: [...getState().topics, action.payload] });
+    }
+
+    @Action(RemoveTopic)
+    removeTopic({ getState, patchState }: StateContext<PlanningStateModel>, { payload }: RemoveTopic) {
+        patchState({ topics: getState().topics.filter((topic: Topic) => topic.title !== payload.title) });
+    }
+
     @Action(AddDay)
     addDay({ getState, patchState }: StateContext<PlanningStateModel>, { payload }: AddDay) {
         const { days, rooms, times, slots } = getState();
-        if (days.some((day: Moment) => day.isSame(payload, 'day'))) {
+        const newDay = typeof payload === 'string' ? utc(payload) : payload;
+        if (days.some((day: Moment) => day.isSame(newDay, 'day'))) {
             throw new Error('This day already exists');
         }
 
@@ -71,7 +90,7 @@ export class PlanningState {
             this.createMissingSlotsForDay(slots, rooms, times, payload);
         }
 
-        patchState({ days: [...days, payload], slots: [...slots] });
+        patchState({ days: [...days, newDay], slots: [...slots] });
     }
 
     @Action(AddRoom)

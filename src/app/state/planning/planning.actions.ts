@@ -1,6 +1,25 @@
 import { Moment } from 'moment';
-import { Time } from '../models/time';
+import { Time } from '../../models/time';
+import { Topic } from '../../models/topic';
+import { Broadcast } from '../stomp/stomp.plugin';
 
+@Broadcast('/topics')
+export class AddTopic {
+    static readonly type = '[Planning] Add Topic';
+
+    constructor(public payload: Topic) {
+    }
+}
+
+@Broadcast('/topics')
+export class RemoveTopic {
+    static readonly type = '[Planning] Remove Topic';
+
+    constructor(public payload: Topic) {
+    }
+}
+
+@Broadcast('/topics')
 export class AddDay {
     static readonly type = '[Planning] Add Day';
 
@@ -15,6 +34,7 @@ export class RemoveDay {
     }
 }
 
+@Broadcast('/topics')
 export class AddRoom {
     static readonly type = '[Planning] Add Room';
 
@@ -29,6 +49,7 @@ export class RemoveRoom {
     }
 }
 
+@Broadcast('/topics')
 export class AddTimeSlot {
     static readonly type = '[Planning] Add Timeslot';
 

@@ -3,17 +3,21 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsModule } from '@ngxs/store';
+import { StompRService } from '@stomp/ng2-stompjs';
 import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
-import { PlanningPageComponent } from './pages/planning-page/planning-page.component';
-import { FrontPageComponent } from './pages/front-page/front-page.component';
-import { BarcampService } from './services/barcamp.service';
-import { PlanningState } from './state/planning.state';
-import { NavDrawerComponent } from './components/nav-drawer/nav-drawer.component';
 import { ConfigurerComponent } from './components/configurer/configurer.component';
+import { NavDrawerComponent } from './components/nav-drawer/nav-drawer.component';
+import { TopicCardComponent } from './components/topic-card/topic-card.component';
+import { CoreModule } from './core/core.module';
+import { FrontPageComponent } from './pages/front-page/front-page.component';
+import { PlanningPageComponent } from './pages/planning-page/planning-page.component';
+import { BarcampService } from './services/barcamp.service';
+import { PlanningState } from './state/planning/planning.state';
+import { NgxsStompPluginModule } from './state/stomp/stomp.plugin';
+import { StompState } from './state/stomp/stomp.state';
 
 @NgModule({
     declarations: [
@@ -22,17 +26,20 @@ import { ConfigurerComponent } from './components/configurer/configurer.componen
         PlanningPageComponent,
         NavDrawerComponent,
         ConfigurerComponent,
+        TopicCardComponent,
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        NgxsModule.forRoot([PlanningState]),
+        NgxsModule.forRoot([PlanningState, StompState]),
         NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
+        NgxsStompPluginModule.forRoot(),
         CoreModule,
         ReactiveFormsModule,
     ],
     providers: [
         BarcampService,
+        StompRService,
     ],
     bootstrap: [AppComponent]
 })

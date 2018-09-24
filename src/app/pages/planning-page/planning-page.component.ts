@@ -7,6 +7,7 @@ import { SlotType } from '../../models/slot-type';
 import { Time } from '../../models/time';
 import { AddDay, AddRoom, AddTimeSlot } from '../../state/planning/planning.actions';
 import { PlanningState } from '../../state/planning/planning.state';
+import { StompSubscribe } from '../../state/stomp/stomp.actions';
 
 @Component({
     selector: 'th-configuration-page',
@@ -29,6 +30,14 @@ export class PlanningPageComponent {
     rooms: Observable<string>;
 
     constructor(private store: Store) {
+        this.store.dispatch([
+            new StompSubscribe({ queueName: '/days/initial' }),
+            new StompSubscribe({ queueName: '/days/queue' }),
+            new StompSubscribe({ queueName: '/rooms/initial' }),
+            new StompSubscribe({ queueName: '/rooms/queue' }),
+            new StompSubscribe({ queueName: '/timeslots/initial' }),
+            new StompSubscribe({ queueName: '/timeslots/queue' }),
+        ]);
     }
 
     addDay() {

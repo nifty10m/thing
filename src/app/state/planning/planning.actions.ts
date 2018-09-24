@@ -19,7 +19,7 @@ export class RemoveTopic {
     }
 }
 
-@Broadcast('/topics')
+@Broadcast('/days')
 export class AddDay {
     static readonly type = '[Planning] Add Day';
 
@@ -27,6 +27,7 @@ export class AddDay {
     }
 }
 
+@Broadcast('/days')
 export class RemoveDay {
     static readonly type = '[Planning] Remove Day';
 
@@ -34,7 +35,7 @@ export class RemoveDay {
     }
 }
 
-@Broadcast('/topics')
+@Broadcast('/rooms')
 export class AddRoom {
     static readonly type = '[Planning] Add Room';
 
@@ -42,6 +43,7 @@ export class AddRoom {
     }
 }
 
+@Broadcast('/rooms')
 export class RemoveRoom {
     static readonly type = '[Planning] Remove Room';
 
@@ -49,7 +51,7 @@ export class RemoveRoom {
     }
 }
 
-@Broadcast('/topics')
+@Broadcast('/timeslots')
 export class AddTimeSlot {
     static readonly type = '[Planning] Add Timeslot';
 
@@ -57,6 +59,7 @@ export class AddTimeSlot {
     }
 }
 
+@Broadcast('/timeslots')
 export class RemoveTimeSlot {
     static readonly type = '[Planning] Remove Timeslot';
 

@@ -6,10 +6,14 @@
   <ng-container navFooter></ng-container>
 </th-nav-drawer>
 <div class="container">
-  <div *ngIf="!(days | async).length">
-    <p class="intro-text">
-      Starte mit der Planung deines Barcamps indem du zuerst den Zeitraum festlegst.
+  <div class="intro" *ngIf="!(days | async).length">
+    <p>
+      Plane dein Barcamp indem du zuerst den Zeitraum festlegst, danach die verfügbaren Räume anlegst und
+      zuletzt die einzelnen Tage in Zeitslots aufteilst.
     </p>
+    <button (click)="addDay()" primary>
+      Planung Starten
+    </button>
   </div>
   <div *ngFor="let day of days | async">
     <h4 contenteditable>{{ day | date: 'EEE dd.MM.' }}</h4>
@@ -46,7 +50,7 @@
       </tfoot>
     </table>
   </div>
-  <button (click)="addDay()">
+  <button (click)="addDay()" *ngIf="(days | async).length">
     <i class="fa fa-plus"></i>
   </button>
 </div>

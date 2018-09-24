@@ -57,7 +57,7 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.store.dispatch(new StompSubscribe({ queueName: '/topics/initial' }));
-        this.store.dispatch(new StompSubscribe({ queueName: '/topics/stream' }));
+        this.store.dispatch(new StompSubscribe({ queueName: '/topics/queue' }));
     }
 
     ngOnDestroy() {

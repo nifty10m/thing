@@ -9,6 +9,18 @@
     width: calc(100vw - 300px);
     padding: 20px;
     overflow-x: auto;
+    align-items: flex-start;
+
+    div.intro {
+        width: 60%;
+        margin: 0 auto;
+        align-self: center;
+        text-align: center;
+
+        p {
+            margin-bottom: 20px;
+        }
+    }
 
     table {
         border-collapse: collapse;
@@ -18,7 +30,7 @@
         td {
             min-width: 300px;
             width: 300px;
-            border: 1px solid black;
+            // border: 1px solid black;
 
             &:first-child {
                 width: 100px;

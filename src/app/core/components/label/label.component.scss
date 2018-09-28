@@ -1,0 +1,27 @@
+@import "variables";
+
+:host {
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 10;
+
+    div {
+        background: white;
+        color: $font-color;
+        display: inline-block;
+        font-family: Mukta, 'sans-serif';
+        font-size: 14px;
+        font-weight: 400;
+        left: 5px;
+        line-height: 20px;
+        padding: 0 5px;
+        position: absolute;
+        top: 8px;
+        transform-origin: left center;
+        transition: all .3s ease;
+    }
+}

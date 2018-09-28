@@ -1,42 +1,20 @@
-p.intro-text {
-    margin-bottom: 2rem;
-}
+@import "variables";
 
-ul {
+:host {
+    form {
+        border-bottom: 1px solid $bg-dark;
+        padding: 0 20px 40px;
+
+        h3 {
+            margin: 0 0 10px;
+        }
+    }
+
     li {
-        display: flex;
-        margin-bottom: 20px;
+        border-bottom: 1px solid $bg-dark;
 
-        span {
-            flex: 1 1 100%;
+        &:last-child {
+            border-bottom: none;
         }
-
-        button {
-            opacity: 0;
-        }
-
-        &:hover button {
-            opacity: 1;
-            transition: 0.3s ease;
-        }
-    }
-}
-
-form {
-    margin-bottom: 20px;
-    width: 100%;
-
-    div {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    input, select {
-        flex: 1 1 100%;
-        margin-right: 20px;
-    }
-
-    input {
-        width: 50px;
     }
 }

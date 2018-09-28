@@ -1,21 +1,24 @@
-<div class="container">
-  <h4 class="ellipsis">
+<div class="header">
+  <h4>
     {{ topic.title }}
   </h4>
-  <p class="ellipsis">
+</div>
+<div class="text">
+  <p>
+    Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist.
     {{ topic.description }}
   </p>
-  <div class="footer">
-    <span class="avatar">
-      {{ topic.pilot }}
-    </span>
+</div>
+<div class="footer">
+  <div class="avatar">
+    {{ topic.pilot }}
+  </div>
+  <div>
+    <button icon (click)="remove()">
+      <span class="fa fa-trash"></span>
+    </button>
     <div>
-      <button (click)="remove()">
-        <i class="fa fa-trash"></i>
-      </button>
-      <span>
-        {{ topic.votes }}
-      </span>
+      {{ topic.votes }}
     </div>
   </div>
 </div>

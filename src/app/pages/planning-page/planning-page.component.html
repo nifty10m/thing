@@ -16,23 +16,29 @@
     </button>
   </div>
   <div *ngFor="let day of days | async">
-    <h4 contenteditable>{{ day | date: 'EEE dd.MM.' }}</h4>
+    <h4>{{ day | date: 'EEE dd.MM.' }}</h4>
     <table>
       <thead>
       <tr>
         <th>Zeit/Raum</th>
-        <th *ngFor="let room of rooms | async">{{ room }}</th>
+        <th *ngFor="let room of rooms | async; let idx = index"
+            contenteditable
+            (blur)="roomNameChange($event, room, idx)">{{ room }}
+        </th>
         <th>
           <button (click)="addRoom()">
             <i class="fa fa-plus"></i>
+            Raum
           </button>
         </th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let time of times | async">
+      <tr *ngFor="let time of times | async; let idx = index">
         <td>
-          <p>{{ time.start | date: 'H:mm' }}</p> - <p>{{ time.end | date: 'H:mm' }}</p>
+          <p contenteditable (blur)="startTimeChange($event, time, idx)">{{ time.start | date: 'H:mm' }}</p>
+          -
+          <p contenteditable (blur)="endTimeChange($event, time, idx)">{{ time.end | date: 'H:mm' }}</p>
         </td>
         <td *ngFor="let room of rooms | async">
           Test
@@ -44,6 +50,7 @@
         <td>
           <button (click)="addTime()">
             <i class="fa fa-plus"></i>
+            Zeitslot
           </button>
         </td>
       </tr>
@@ -52,5 +59,6 @@
   </div>
   <button (click)="addDay()" *ngIf="(days | async).length">
     <i class="fa fa-plus"></i>
+    Tag
   </button>
 </div>

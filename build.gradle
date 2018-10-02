@@ -26,6 +26,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-websocket')
+	compile('org.codehaus.groovy:groovy')
 
 	// json
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')

@@ -11,7 +11,7 @@ export class AppComponent implements OnDestroy {
     title = 'thing';
 
     constructor(private store: Store) {
-        this.store.dispatch(new StompConnect({ url: 'ws://localhost:8080/websocket' }));
+        this.store.dispatch(new StompConnect({ url: 'ws://192.168.178.59:8080/websocket' }));
     }
 
     ngOnDestroy() {

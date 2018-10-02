@@ -1,11 +1,11 @@
 import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
 import { groupBy } from 'lodash-es';
-import { Moment, utc } from 'moment';
+import { Moment, parseZone, utc } from 'moment';
 import { Barcamp } from '../../models/barcamp';
 import { Slot } from '../../models/slot';
 import { Time } from '../../models/time';
 import { Topic } from '../../models/topic';
-import { AddDay, AddRoom, AddTimeSlot, AddTopic, RemoveTopic } from './planning.actions';
+import { AddDay, AddRoom, AddTimeSlot, AddTopic, EditRoom, EditTimeSlot, RemoveTopic } from './planning.actions';
 
 export interface PlanningStateModel {
     barcamp: Barcamp;
@@ -86,11 +86,12 @@ export class PlanningState {
             throw new Error('This day already exists');
         }
 
+        let missingSlots = [];
         if (days.length && rooms.length && times.length) {
-            this.createMissingSlotsForDay(slots, rooms, times, payload);
+            missingSlots = this.createMissingSlotsForDay(rooms, times, payload);
         }
 
-        patchState({ days: [...days, newDay], slots: [...slots] });
+        patchState({ days: [...days, newDay], slots: [...slots, ...missingSlots] });
     }
 
     @Action(AddRoom)
@@ -100,16 +101,33 @@ export class PlanningState {
             throw new Error('This room already exists');
         }
 
+        let missingSlots = [];
         if (days.length && rooms.length && times.length) {
-            this.createMissingSlotsForRoom(slots, days, times, payload);
+            missingSlots = this.createMissingSlotsForRoom(days, times, payload);
         }
 
-        patchState({ rooms: [...rooms, payload], slots: [...slots] });
+        patchState({ rooms: [...rooms, payload], slots: [...slots, ...missingSlots] });
+    }
+
+    @Action(EditRoom)
+    editRoom({ getState, patchState }: StateContext<PlanningStateModel>, { payload: { roomIndex, newName } }: EditRoom) {
+        const { rooms } = getState();
+
+        if (rooms.some((room: string) => room === newName)) {
+            throw new Error('This room already exists');
+        }
+
+        rooms[roomIndex] = newName;
+        patchState({ rooms: [...rooms] });
     }
 
     @Action(AddTimeSlot)
     addTimeSlot({ getState, patchState }: StateContext<PlanningStateModel>, { payload }: AddTimeSlot) {
         const { days, rooms, times, slots } = getState();
+        payload.start = parseZone(payload.start);
+        payload.end = parseZone(payload.end);
+        console.log(payload.start);
+
         if (times.some((time: Time) => {
             return payload.start.isBetween(time.start, time.end, 'minutes', '[)')
                 || payload.end.isBetween(time.start, time.end, 'minutes', '(]');
@@ -117,14 +135,37 @@ export class PlanningState {
             throw new Error('This time intersects another time');
         }
 
+        let missingSlots = [];
         if (days.length && rooms.length && times.length) {
-            this.createMissingSlotsForTime(slots, days, rooms, payload);
+            missingSlots = this.createMissingSlotsForTime(days, rooms, payload);
         }
 
-        patchState({ times: [...times, payload], slots: [...slots] });
+        patchState({ times: [...times, payload], slots: [...slots, ...missingSlots] });
     }
 
-    private createMissingSlotsForDay(slots: Slot[], rooms: string[], times: Time[], day: Moment) {
+    @Action(EditTimeSlot)
+    editTimeSlot({ getState, patchState }: StateContext<PlanningStateModel>, { payload: { timeSlotIndex, newTime } }: EditTimeSlot) {
+        const { times } = getState();
+        newTime.start = parseZone(newTime.start);
+        newTime.end = parseZone(newTime.end);
+
+        const collides = times
+            .filter((time: Time, index: number) => index !== timeSlotIndex)
+            .some((time: Time) => {
+                return newTime.start.isBetween(time.start, time.end, 'minutes', '[)')
+                    || newTime.end.isBetween(time.start, time.end, 'minutes', '(]');
+            });
+
+        if (collides) {
+            throw new Error('This time intersects another time');
+        }
+
+        times[timeSlotIndex] = newTime;
+        patchState({ times: [...times] });
+    }
+
+    private createMissingSlotsForDay(rooms: string[], times: Time[], day: Moment): Slot[] {
+        const slots = [];
         rooms.forEach((room: string) => {
             times.forEach((time: Time) => {
                 const slot: Slot = {
@@ -135,9 +176,11 @@ export class PlanningState {
                 slots.push(slot);
             });
         });
+        return slots;
     }
 
-    private createMissingSlotsForRoom(slots: Slot[], days: Moment[], times: Time[], room: string) {
+    private createMissingSlotsForRoom(days: Moment[], times: Time[], room: string): Slot[] {
+        const slots = [];
         days.forEach((day: Moment) => {
             times.forEach((time: Time) => {
                 const slot: Slot = {
@@ -148,9 +191,11 @@ export class PlanningState {
                 slots.push(slot);
             });
         });
+        return slots;
     }
 
-    private createMissingSlotsForTime(slots: Slot[], days: Moment[], rooms: string[], time: Time) {
+    private createMissingSlotsForTime(days: Moment[], rooms: string[], time: Time): Slot[] {
+        const slots = [];
         days.forEach((day: Moment) => {
             rooms.forEach((room: string) => {
                 const slot: Slot = {
@@ -161,5 +206,6 @@ export class PlanningState {
                 slots.push(slot);
             });
         });
+        return slots;
     }
 }

@@ -51,6 +51,14 @@ export class RemoveRoom {
     }
 }
 
+@Broadcast('/rooms')
+export class EditRoom {
+    static readonly type = '[Planning] Edit Room';
+
+    constructor(public payload: { roomIndex: number, newName: string }) {
+    }
+}
+
 @Broadcast('/timeslots')
 export class AddTimeSlot {
     static readonly type = '[Planning] Add Timeslot';
@@ -64,5 +72,13 @@ export class RemoveTimeSlot {
     static readonly type = '[Planning] Remove Timeslot';
 
     constructor(public payload: Time) {
+    }
+}
+
+@Broadcast('/timeslots')
+export class EditTimeSlot {
+    static readonly type = '[Planning] Edit Timeslot';
+
+    constructor(public payload: { timeSlotIndex: number, newTime: Time }) {
     }
 }

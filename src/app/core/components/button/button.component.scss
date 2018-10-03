@@ -1,11 +1,12 @@
 @import "variables";
 
-:host {
+button {
     background: $primary;
     border: none;
     border-radius: 3px;
-    color: white;
+    color: $font-color;
     cursor: pointer;
+    display: inline-block;
     font-size: 12px;
     font-weight: 600;
     height: 34px;
@@ -19,6 +20,7 @@
 
     &:hover {
         background: darken($primary, 5%);
+
     }
 
     &[full-width] {
@@ -39,10 +41,10 @@
         color: $font-color;
         font-size: 18px;
         padding: 0;
-        width: 44px;
+        width: 34px;
 
         &:hover {
-            background: $bg-light;
+            background: transparent;
         }
 
         &[primary] {
@@ -52,6 +54,15 @@
             &:hover {
                 background: darken($primary, 5%);
             }
+        }
+
+        svg {
+            height: 18px;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
         }
     }
 }

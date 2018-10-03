@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
     selector: 'fieldset',
@@ -6,11 +6,5 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     styleUrls: ['./fieldset.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FieldsetComponent implements OnInit {
-
-    constructor() { }
-
-    ngOnInit() {
-    }
-
+export class FieldsetComponent {
 }

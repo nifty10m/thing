@@ -14,7 +14,8 @@ fieldset {
 
     input,
     textarea {
-        &:focus {
+        &:focus,
+        &.ng-dirty {
             & + label div {
                 color: $primary !important;
                 transform: translateY(-18px);

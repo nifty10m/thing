@@ -4,9 +4,11 @@
 /dist
 /tmp
 /out-tsc
+build
 
 # dependencies
 node_modules
+.gradle
 
 # IDEs and editors
 /.idea

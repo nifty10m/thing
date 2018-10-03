@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Moment, parseZone } from 'moment';
+import { Moment, utc } from 'moment';
 import { Observable } from 'rxjs/internal/Observable';
 import { Barcamp } from '../../models/barcamp';
 import { SlotType } from '../../models/slot-type';
@@ -43,7 +43,7 @@ export class PlanningPageComponent {
     addDay() {
         const days = this.store.selectSnapshot(PlanningState.days);
         const lastDay = days[days.length - 1];
-        const newDay = lastDay ? lastDay.clone().add(1, 'day') : parseZone();
+        const newDay = lastDay ? lastDay.clone().add(1, 'day') : utc();
         this.store.dispatch(new AddDay(newDay));
     }
 
@@ -60,10 +60,10 @@ export class PlanningPageComponent {
         this.store.dispatch(new AddTimeSlot({
             start: latestTime
                 ? latestTime.end.clone().add(15, 'minute')
-                : parseZone().local().startOf('hour').hours(9),
+                : utc().startOf('hour').hours(9),
             end: latestTime
                 ? latestTime.end.clone().add(1, 'hour')
-                : parseZone().local().startOf('hour').hours(10),
+                : utc().startOf('hour').hours(10),
             type: SlotType.TOPIC
         }));
     }
@@ -76,11 +76,16 @@ export class PlanningPageComponent {
     }
 
     startTimeChange(event: any, { start, ...rest }: Time, timeSlotIndex: number) {
-        console.log(start);
-        const time = parseZone(event.target.innerText, 'H:mm').local();
-        console.log(time);
+        const time = utc(event.target.innerText, 'H:mm');
         if (time && !time.isSame(start)) {
             this.store.dispatch(new EditTimeSlot({ timeSlotIndex, newTime: { start: time, ...rest } }));
+        }
+    }
+
+    endTimeChange(event: any, { end, ...rest }: Time, timeSlotIndex: number) {
+        const time = utc(event.target.innerText, 'H:mm').local();
+        if (time && !time.isSame(end)) {
+            this.store.dispatch(new EditTimeSlot({ timeSlotIndex, newTime: { end: time, ...rest } }));
         }
     }
 }

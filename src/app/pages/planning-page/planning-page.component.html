@@ -36,9 +36,9 @@
       <tbody>
       <tr *ngFor="let time of times | async; let idx = index">
         <td>
-          <p contenteditable (blur)="startTimeChange($event, time, idx)">{{ time.start | date: 'H:mm' }}</p>
+          <p contenteditable (blur)="startTimeChange($event, time, idx)">{{ time.start | date: 'H:mm':'+0' }}</p>
           -
-          <p contenteditable (blur)="endTimeChange($event, time, idx)">{{ time.end | date: 'H:mm' }}</p>
+          <p contenteditable (blur)="endTimeChange($event, time, idx)">{{ time.end | date: 'H:mm':'+0' }}</p>
         </td>
         <td *ngFor="let room of rooms | async">
           Test

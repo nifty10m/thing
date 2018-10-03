@@ -1,6 +1,6 @@
 import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
 import { groupBy } from 'lodash-es';
-import { Moment, parseZone, utc } from 'moment';
+import { Moment, utc } from 'moment';
 import { Barcamp } from '../../models/barcamp';
 import { Slot } from '../../models/slot';
 import { Time } from '../../models/time';
@@ -124,15 +124,15 @@ export class PlanningState {
     @Action(AddTimeSlot)
     addTimeSlot({ getState, patchState }: StateContext<PlanningStateModel>, { payload }: AddTimeSlot) {
         const { days, rooms, times, slots } = getState();
-        payload.start = parseZone(payload.start);
-        payload.end = parseZone(payload.end);
+        payload.start = utc(payload.start);
+        payload.end = utc(payload.end);
         console.log(payload.start);
 
         if (times.some((time: Time) => {
             return payload.start.isBetween(time.start, time.end, 'minutes', '[)')
                 || payload.end.isBetween(time.start, time.end, 'minutes', '(]');
         })) {
-            throw new Error('This time intersects another time');
+            console.warn('This time intersects another time');
         }
 
         let missingSlots = [];
@@ -146,8 +146,8 @@ export class PlanningState {
     @Action(EditTimeSlot)
     editTimeSlot({ getState, patchState }: StateContext<PlanningStateModel>, { payload: { timeSlotIndex, newTime } }: EditTimeSlot) {
         const { times } = getState();
-        newTime.start = parseZone(newTime.start);
-        newTime.end = parseZone(newTime.end);
+        newTime.start = utc(newTime.start);
+        newTime.end = utc(newTime.end);
 
         const collides = times
             .filter((time: Time, index: number) => index !== timeSlotIndex)
@@ -157,7 +157,7 @@ export class PlanningState {
             });
 
         if (collides) {
-            throw new Error('This time intersects another time');
+            console.warn('This time intersects another time');
         }
 
         times[timeSlotIndex] = newTime;

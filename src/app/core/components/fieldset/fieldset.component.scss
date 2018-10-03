@@ -1,0 +1,25 @@
+@import "variables";
+
+fieldset {
+    background: white;
+    border: 1px solid darken($bg-dark, 10%);
+    border-radius: 3px;
+    margin: 0 0 10px;
+    padding: 10px 10px 5px;
+    position: relative;
+
+    &:last-child {
+        margin: 0;
+    }
+
+    input,
+    textarea {
+        &:focus,
+        &.ng-dirty {
+            & + label div {
+                color: $primary !important;
+                transform: translateY(-18px);
+            }
+        }
+    }
+}

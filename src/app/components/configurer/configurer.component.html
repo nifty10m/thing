@@ -1,18 +1,21 @@
-<div class="configurer-container">
-  <h4>Themen</h4>
-  <form [formGroup]="topicForm" (submit)="addTopic()">
-    <div>
-      <input type="text" formControlName="topicCtrl">
-      <button type="submit" [disabled]="topicForm.invalid">
-        <i class="fa fa-plus"></i>
-      </button>
-    </div>
-  </form>
-  <ul>
-    <li *ngFor="let topic of topics | async">
-      <th-topic-card [topic]="topic"
-                     (delete)="removeTopic($event)">
-      </th-topic-card>
-    </li>
-  </ul>
-</div>
+<form [formGroup]="topicForm" (submit)="addTopic()">
+  <h3>Neues Thema</h3>
+  <fieldset>
+    <input id="title" type="text" formControlName="topicCtrl">
+    <label for="title">Titel</label>
+  </fieldset>
+  <fieldset>
+    <textarea id="description"></textarea>
+    <label for="description">Beschreibung</label>
+  </fieldset>
+  <button type="submit" [disabled]="topicForm.invalid">
+    Erstellen
+  </button>
+</form>
+<ul>
+  <li *ngFor="let topic of topics | async">
+    <th-topic-card [topic]="topic"
+                   (delete)="removeTopic($event)">
+    </th-topic-card>
+  </li>
+</ul>

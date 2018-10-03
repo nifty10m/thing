@@ -1,36 +1,35 @@
-.container {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  position: relative;
-  width: 300px;
-  height: 130px;
-  background: white;
-  border: 1px solid #dddddd;
-  box-sizing: border-box;
-  box-shadow: #dddddd 0 0 4px;
-  padding: 10px;
-}
+@import "variables";
 
-p {
-  margin: 10px 0;
-}
+:host {
+    cursor: move;
+    display: block;
+    padding: 25px 20px 20px;
+    transition: all .3s ease;
+    width: 280px;
 
-.footer {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
+    &:hover {
+        background: $bg-light;
+    }
 
-  .avatar {
-    background: #dddddd;
-    border-radius: 50%;
-    padding: 5px;
-  }
-}
+    &.drag {
+        border-radius: 3px;
+        box-shadow: $shadow;
+        z-index: 10;
+    }
 
-.ellipsis {
-  width: 280px;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    .footer {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+
+        .avatar {
+            color: $font-color;
+            font-family: Mukta, 'sans-serif';
+            font-size: 14px;
+            font-weight: 800;
+            height: 34px;
+            line-height: 34px;
+            width: 34px;
+        }
+    }
 }

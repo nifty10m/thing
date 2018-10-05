@@ -52,7 +52,7 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
         });
         this.topicForm = fb.group({
             topicTitle: new FormControl('', [Validators.required]),
-            topicDescription: new FormControl('', [Validators.required])
+            topicDescription: new FormControl('')
         });
     }
 

@@ -8,7 +8,7 @@ button {
     cursor: pointer;
     display: inline-block;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 800;
     height: 34px;
     line-height: 34px;
     outline: none;
@@ -19,7 +19,7 @@ button {
     transition: all .3s ease;
 
     &:hover {
-        background: darken($primary, 5%);
+        background: lighten($primary, 5%);
 
     }
 
@@ -38,13 +38,14 @@ button {
 
     &[icon] {
         background: transparent;
+        border-radius: 100%;
         color: $font-color;
         font-size: 18px;
         padding: 0;
         width: 34px;
 
         &:hover {
-            background: transparent;
+            background: $primary;
         }
 
         &[primary] {
@@ -57,12 +58,12 @@ button {
         }
 
         svg {
-            height: 18px;
+            height: 16px;
             left: 50%;
             position: absolute;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 18px;
+            width: 16px;
         }
     }
 }

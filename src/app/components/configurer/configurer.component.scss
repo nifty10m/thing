@@ -2,7 +2,7 @@
 
 :host {
     form {
-        border-bottom: 1px solid $bg-dark;
+        border-bottom: 1px solid $border;
         padding: 0 20px 40px;
 
         h3 {
@@ -11,10 +11,6 @@
     }
 
     li {
-        border-bottom: 1px solid $bg-dark;
-
-        &:last-child {
-            border-bottom: none;
-        }
+        border-bottom: 1px solid $border;
     }
 }

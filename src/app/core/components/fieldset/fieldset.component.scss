@@ -2,7 +2,7 @@
 
 fieldset {
     background: white;
-    border: 1px solid darken($bg-dark, 10%);
+    border: 2px solid $border;
     border-radius: 3px;
     margin: 0 0 10px;
     padding: 10px 10px 5px;
@@ -12,10 +12,18 @@ fieldset {
         margin: 0;
     }
 
+    &.actions {
+        border: none;
+        display: flex;
+        justify-content: flex-end;
+        margin: 0;
+        padding: 0;
+    }
+
     input,
     textarea {
         &:focus,
-        &.ng-dirty {
+        &.filled {
             & + label div {
                 color: $primary !important;
                 transform: translateY(-18px);

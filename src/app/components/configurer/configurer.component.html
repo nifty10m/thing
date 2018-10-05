@@ -8,9 +8,11 @@
     <textarea id="description" formControlName="topicDescription"></textarea>
     <label for="description">Beschreibung</label>
   </fieldset>
-  <button type="submit" [disabled]="topicForm.invalid">
-    Erstellen
-  </button>
+  <fieldset class="actions">
+    <button type="submit" [disabled]="topicForm.invalid">
+      Erstellen
+    </button>
+  </fieldset>
 </form>
 <ul>
   <li *ngFor="let topic of topics | async">

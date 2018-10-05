@@ -51,7 +51,8 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
             dayCtrl: new FormControl('', [Validators.required])
         });
         this.topicForm = fb.group({
-            topicCtrl: new FormControl('', [Validators.required])
+            topicTitle: new FormControl('', [Validators.required]),
+            topicDescription: new FormControl('')
         });
     }
 
@@ -75,8 +76,9 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
     }
 
     addTopic() {
-        const topic = this.topicForm.get('topicCtrl').value;
-        this.store.dispatch(new AddTopic({ title: topic, pilot: 'SRO', votes: [] }));
+        const title = this.topicForm.get('topicTitle').value;
+        const description = this.topicForm.get('topicDescription').value;
+        this.store.dispatch(new AddTopic({ title: title, description: description, pilot: 'SRO', votes: [] }));
     }
 
     removeTopic(topic: Topic) {

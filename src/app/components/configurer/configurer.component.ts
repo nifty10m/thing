@@ -42,6 +42,23 @@ export class ConfigurerComponent implements OnInit {
     ngOnInit() {
         this.store.dispatch(new StompSubscribe({ queueName: '/topics/initial' }));
         this.store.dispatch(new StompSubscribe({ queueName: '/topics/queue' }));
+<<<<<<< HEAD
+=======
+    }
+
+    ngOnDestroy() {
+        this.topicSubscription.unsubscribe();
+    }
+
+    addDay() {
+        const day = utc(this.dayForm.get('dayCtrl').value);
+        this.configuredDays.push(day);
+        this.dayForm.setValue({ dayCtrl: day.clone().add(1, 'day').format('YYYY-MM-DD') });
+    }
+
+    submitConfiguration() {
+        this.configuredDays.forEach((day: Moment) => this.store.dispatch(new AddDay(day)));
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
     }
 
     addTopic() {

@@ -36,6 +36,7 @@ h3 {
     margin: 0 0 40px;
 }
 
+<<<<<<< HEAD
 h4 {
     font-family: Mukta, 'sans-serif';
     color: $font-color;
@@ -43,6 +44,12 @@ h4 {
     line-height: 22px;
     font-weight: 600;
     margin: 0 0 5px;
+=======
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
 }
 
 p {

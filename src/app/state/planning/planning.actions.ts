@@ -35,6 +35,7 @@ export class RemoveDay {
     }
 }
 
+<<<<<<< HEAD
 @Broadcast('/days')
 export class EditDay {
     static readonly type = '[Planning] Edit Day';
@@ -43,6 +44,8 @@ export class EditDay {
     }
 }
 
+=======
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
 @Broadcast('/rooms')
 export class AddRoom {
     static readonly type = '[Planning] Add Room';
@@ -90,6 +93,7 @@ export class EditTimeSlot {
     constructor(public payload: { timeSlotIndex: number, newTime: Time }) {
     }
 }
+<<<<<<< HEAD
 
 export class AttachTopic {
     static readonly type = '[Planning] Attach to Slot';
@@ -97,3 +101,5 @@ export class AttachTopic {
     constructor(public payload: { topic: Topic, slotIndex: number }) {
     }
 }
+=======
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Barcamp } from '../../models/barcamp';
 import { SlotType } from '../../models/slot-type';
 import { Time } from '../../models/time';
+<<<<<<< HEAD
 import { AddDay, AddRoom, AddTimeSlot, EditRoom, EditTimeSlot, EditDay, AttachTopic } from '../../state/planning/planning.actions';
 import { PlanningState } from '../../state/planning/planning.state';
 import { StompSubscribe } from '../../state/stomp/stomp.actions';
@@ -12,6 +13,11 @@ import { Slot } from '../../models/slot';
 import { map, filter } from 'rxjs/operators';
 import { Topic } from '../../models/topic';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+=======
+import { AddDay, AddRoom, AddTimeSlot, EditRoom, EditTimeSlot } from '../../state/planning/planning.actions';
+import { PlanningState } from '../../state/planning/planning.state';
+import { StompSubscribe } from '../../state/stomp/stomp.actions';
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
 
 @Component({
     selector: 'th-configuration-page',
@@ -32,9 +38,12 @@ export class PlanningPageComponent {
 
     @Select(PlanningState.rooms)
     rooms: Observable<string[]>;
+<<<<<<< HEAD
 
     @Select(PlanningState.slots)
     slots: Observable<Slot[]>;
+=======
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
 
     constructor(private store: Store) {
         this.store.dispatch([
@@ -45,6 +54,7 @@ export class PlanningPageComponent {
             new StompSubscribe({ queueName: '/timeslots/initial' }),
             new StompSubscribe({ queueName: '/timeslots/queue' }),
         ]);
+<<<<<<< HEAD
     }
 
     findTopic(day: Moment, room: string, time: Time): Observable<Topic> {
@@ -78,6 +88,8 @@ export class PlanningPageComponent {
         const slotIndex = Number.parseInt(container.id.substr(5));
         const topic = previousContainer.data[previousIndex];
         this.store.dispatch(new AttachTopic({ topic, slotIndex }));
+=======
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
     }
 
     addDay() {
@@ -108,6 +120,7 @@ export class PlanningPageComponent {
         }));
     }
 
+<<<<<<< HEAD
     dayChange(event: any, day: Moment, dayIndex: number) {
         const newDay = utc(event.target.innerText, 'DD.MM');
         newDay.year(day.get('year'));
@@ -116,6 +129,8 @@ export class PlanningPageComponent {
         }
     }
 
+=======
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
     roomNameChange(event: any, roomName: string, roomIndex: number) {
         const newName = event.target.innerText;
         if (newName && newName !== roomName) {
@@ -125,14 +140,22 @@ export class PlanningPageComponent {
 
     startTimeChange(event: any, { start, ...rest }: Time, timeSlotIndex: number) {
         const time = utc(event.target.innerText, 'H:mm');
+<<<<<<< HEAD
         if (time && !time.isSame(start, 'minute')) {
+=======
+        if (time && !time.isSame(start)) {
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
             this.store.dispatch(new EditTimeSlot({ timeSlotIndex, newTime: { start: time, ...rest } }));
         }
     }
 
     endTimeChange(event: any, { end, ...rest }: Time, timeSlotIndex: number) {
         const time = utc(event.target.innerText, 'H:mm').local();
+<<<<<<< HEAD
         if (time && !time.isSame(end, 'minute')) {
+=======
+        if (time && !time.isSame(end)) {
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
             this.store.dispatch(new EditTimeSlot({ timeSlotIndex, newTime: { end: time, ...rest } }));
         }
     }

@@ -5,7 +5,11 @@ import { Barcamp } from '../../models/barcamp';
 import { Slot } from '../../models/slot';
 import { Time } from '../../models/time';
 import { Topic } from '../../models/topic';
+<<<<<<< HEAD
 import { AddDay, AddRoom, AddTimeSlot, AddTopic, EditDay, EditRoom, EditTimeSlot, RemoveTopic, AttachTopic } from './planning.actions';
+=======
+import { AddDay, AddRoom, AddTimeSlot, AddTopic, EditRoom, EditTimeSlot, RemoveTopic } from './planning.actions';
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
 
 export interface PlanningStateModel {
     barcamp: Barcamp;
@@ -94,6 +98,7 @@ export class PlanningState {
             console.log('missing day slots', missingSlots);
         }
 
+<<<<<<< HEAD
         patchState({ days: [...days, newDay], slots: [...slots, ...missingSlots] });
     }
 
@@ -107,6 +112,14 @@ export class PlanningState {
 
         days[dayIndex] = newDay;
         patchState({ days: [...days] });
+=======
+        let missingSlots = [];
+        if (days.length && rooms.length && times.length) {
+            missingSlots = this.createMissingSlotsForDay(rooms, times, payload);
+        }
+
+        patchState({ days: [...days, newDay], slots: [...slots, ...missingSlots] });
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
     }
 
     @Action(AddRoom)
@@ -122,6 +135,7 @@ export class PlanningState {
             console.log('missing room slots', missingSlots);
         }
 
+<<<<<<< HEAD
         patchState({ rooms: [...rooms, payload], slots: [...slots, ...missingSlots] });
     }
 
@@ -133,6 +147,24 @@ export class PlanningState {
             console.warn('This room already exists');
         }
 
+=======
+        let missingSlots = [];
+        if (days.length && rooms.length && times.length) {
+            missingSlots = this.createMissingSlotsForRoom(days, times, payload);
+        }
+
+        patchState({ rooms: [...rooms, payload], slots: [...slots, ...missingSlots] });
+    }
+
+    @Action(EditRoom)
+    editRoom({ getState, patchState }: StateContext<PlanningStateModel>, { payload: { roomIndex, newName } }: EditRoom) {
+        const { rooms } = getState();
+
+        if (rooms.some((room: string) => room === newName)) {
+            throw new Error('This room already exists');
+        }
+
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
         rooms[roomIndex] = newName;
         patchState({ rooms: [...rooms] });
     }
@@ -142,12 +174,17 @@ export class PlanningState {
         const { days, rooms, times, slots } = getState();
         payload.start = utc(payload.start);
         payload.end = utc(payload.end);
+<<<<<<< HEAD
+=======
+        console.log(payload.start);
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
 
         if (times.some((time: Time) => {
             return payload.start.isBetween(time.start, time.end, 'minutes', '[)')
                 || payload.end.isBetween(time.start, time.end, 'minutes', '(]');
         })) {
             console.warn('This time intersects another time');
+<<<<<<< HEAD
         }
 
         let missingSlots = [];
@@ -156,6 +193,15 @@ export class PlanningState {
             console.log('missing time slots', missingSlots);
         }
 
+=======
+        }
+
+        let missingSlots = [];
+        if (days.length && rooms.length && times.length) {
+            missingSlots = this.createMissingSlotsForTime(days, rooms, payload);
+        }
+
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
         patchState({ times: [...times, payload], slots: [...slots, ...missingSlots] });
     }
 
@@ -178,6 +224,7 @@ export class PlanningState {
 
         times[timeSlotIndex] = newTime;
         patchState({ times: [...times] });
+<<<<<<< HEAD
     }
 
     @Action(AttachTopic)
@@ -185,6 +232,8 @@ export class PlanningState {
         const { slots } = getState();
         slots[slotIndex].topic = topic;
         patchState({ slots });
+=======
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
     }
 
     private createMissingSlotsForDay(rooms: string[], times: Time[], day: Moment): Slot[] {

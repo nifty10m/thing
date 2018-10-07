@@ -9,6 +9,19 @@
     width: calc(100vw - 300px);
     padding: 20px;
     overflow-x: auto;
+    align-items: flex-start;
+    box-sizing: border-box;
+
+    div.intro {
+        width: 60%;
+        margin: 0 auto;
+        align-self: center;
+        text-align: center;
+
+        p {
+            margin-bottom: 20px;
+        }
+    }
 
     table {
         border-collapse: collapse;
@@ -18,11 +31,13 @@
         td {
             min-width: 300px;
             width: 300px;
-            border: 1px solid black;
+            height: 130px;
+            min-height: 130px;
+            // border: 1px solid black;
 
             &:first-child {
-                width: 100px;
-                min-width: 100px;
+                width: 120px;
+                min-width: 120px;
                 text-align: center;
             }
         }
@@ -30,6 +45,25 @@
         th:last-of-type {
             min-width: 0;
             width: auto;
+        }
+
+        tbody {
+            td {
+                border: 1px dashed #cccccc;
+
+                &:first-of-type {
+                    border-left: none;
+                }
+<<<<<<< HEAD
+
+                &:not(:first-of-type) cdk-drop {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                }
+=======
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
+            }
         }
     }
 }

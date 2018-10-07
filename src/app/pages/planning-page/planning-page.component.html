@@ -6,32 +6,45 @@
   <ng-container navFooter></ng-container>
 </th-nav-drawer>
 <div class="container">
-  <div *ngIf="!(days | async).length">
-    <p class="intro-text">
-      Starte mit der Planung deines Barcamps indem du zuerst den Zeitraum festlegst.
+  <div class="intro" *ngIf="!(days | async).length">
+    <p>
+      Plane dein Barcamp indem du zuerst den Zeitraum festlegst, danach die verfügbaren Räume anlegst und
+      zuletzt die einzelnen Tage in Zeitslots aufteilst.
     </p>
+    <button (click)="addDay()" primary>
+      Planung Starten
+    </button>
   </div>
-  <div *ngFor="let day of days | async">
-    <h4 contenteditable>{{ day | date: 'EEE dd.MM.' }}</h4>
+  <div *ngFor="let day of days | async; let dayIdx = index">
+    <h4>{{ day | date: 'EEE' }} <span contenteditable (blur)="dayChange($event, day, dayIdx)">{{ day | date: 'dd.MM.':'+0' }}</span></h4>
     <table>
       <thead>
       <tr>
         <th>Zeit/Raum</th>
-        <th *ngFor="let room of rooms | async">{{ room }}</th>
+        <th *ngFor="let room of rooms | async; let roomIdx = index"
+            contenteditable
+            (blur)="roomNameChange($event, room, roomIdx)">{{ room }}
+        </th>
         <th>
           <button (click)="addRoom()">
             <i class="fa fa-plus"></i>
+            Raum
           </button>
         </th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let time of times | async">
+      <tr *ngFor="let time of times | async; let timeIdx = index">
         <td>
-          <p>{{ time.start | date: 'H:mm' }}</p> - <p>{{ time.end | date: 'H:mm' }}</p>
+          <p contenteditable (blur)="startTimeChange($event, time, timeIdx)">{{ time.start | date: 'H:mm':'+0' }}</p>
+          -
+          <p contenteditable (blur)="endTimeChange($event, time, timeIdx)">{{ time.end | date: 'H:mm':'+0' }}</p>
         </td>
-        <td *ngFor="let room of rooms | async">
-          Test
+        <td *ngFor="let room of rooms | async; let roomIdx = index">
+          <cdk-drop [id]="findSlotId(day, room, time) | async" (dropped)="topicDropped($event)" [connectedTo]="['topic-list']">
+            <th-topic-card *ngIf="findTopic(day, room, time) | async" [topic]="findTopic(day, room, time) | async" cdkDrag>
+            </th-topic-card>
+          </cdk-drop>
         </td>
       </tr>
       </tbody>
@@ -40,13 +53,15 @@
         <td>
           <button (click)="addTime()">
             <i class="fa fa-plus"></i>
+            Zeitslot
           </button>
         </td>
       </tr>
       </tfoot>
     </table>
   </div>
-  <button (click)="addDay()">
+  <button (click)="addDay()" *ngIf="(days | async).length">
     <i class="fa fa-plus"></i>
+    Tag
   </button>
 </div>

@@ -108,7 +108,7 @@ export class StompState {
         if (payload.type) {
             actions.push(payload);
         } else if (typeof payload === 'object') {
-            actions.push(...Object.values(payload).map((serializedAction: string) => JSON.parse(serializedAction)));
+            actions.push(...Object.values(payload));
         } else {
             console.warn('Can not handle stomp messages without a payload or action type');
         }

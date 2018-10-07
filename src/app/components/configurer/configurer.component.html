@@ -12,10 +12,14 @@
     Erstellen
   </button>
 </form>
-<ul>
-  <li *ngFor="let topic of topics | async">
-    <th-topic-card [topic]="topic"
-                   (delete)="removeTopic($event)">
-    </th-topic-card>
-  </li>
-</ul>
+<div>
+  <cdk-drop id="topic-list"
+            [data]="topics | async"
+            [connectedTo]="slotIds | async">
+    <div *ngFor="let topic of topics | async" cdkDrag>
+      <th-topic-card [topic]="topic"
+                    (delete)="removeTopic($event)">
+      </th-topic-card>
+    </div>
+  </cdk-drop>
+</div>

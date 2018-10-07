@@ -17,7 +17,7 @@ import { StompSubscribe } from '../../state/stomp/stomp.actions';
     templateUrl: './configurer.component.html',
     styleUrls: ['./configurer.component.scss']
 })
-export class ConfigurerComponent implements OnInit, OnDestroy {
+export class ConfigurerComponent implements OnInit {
 
     SlotType = SlotType;
 
@@ -27,29 +27,13 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
     @Select(PlanningState.topics)
     topics: Observable<Topic[]>;
 
-    @Select(PlanningState.days)
-    days: Observable<Moment>;
-
-    @Select(PlanningState.times)
-    times: Observable<Time>;
-
-    @Select(PlanningState.rooms)
-    rooms: Observable<string>;
-
-    dayForm: FormGroup;
+    @Select(PlanningState.slotIds)
+    slotIds: Observable<string>;
 
     topicForm: FormGroup;
 
-    topicSubscription: StompSubscription;
-
-    configuredDays: Moment[] = [];
-
-    constructor(private fb: FormBuilder,
-                private changeDetector: ChangeDetectorRef,
+    constructor(fb: FormBuilder,
                 private store: Store) {
-        this.dayForm = fb.group({
-            dayCtrl: new FormControl('', [Validators.required])
-        });
         this.topicForm = fb.group({
             topicTitle: new FormControl('', [Validators.required]),
             topicDescription: new FormControl('')
@@ -58,7 +42,9 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.store.dispatch(new StompSubscribe({ queueName: '/topics/initial' }));
-        this.store.dispatch(new StompSubscribe({ queueName: '/topics/stream' }));
+        this.store.dispatch(new StompSubscribe({ queueName: '/topics/queue' }));
+<<<<<<< HEAD
+=======
     }
 
     ngOnDestroy() {
@@ -73,6 +59,7 @@ export class ConfigurerComponent implements OnInit, OnDestroy {
 
     submitConfiguration() {
         this.configuredDays.forEach((day: Moment) => this.store.dispatch(new AddDay(day)));
+>>>>>>> 01475ee0d7f3283afd3a7079a36e8acc8eade7a4
     }
 
     addTopic() {

@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Topic } from '../../models/topic';
 
 @Component({
     selector: 'th-topic-card',
     templateUrl: './topic-card.component.html',
-    styleUrls: ['./topic-card.component.scss']
+    styleUrls: ['./topic-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopicCardComponent {
 

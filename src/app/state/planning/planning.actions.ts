@@ -35,6 +35,14 @@ export class RemoveDay {
     }
 }
 
+@Broadcast('/days')
+export class EditDay {
+    static readonly type = '[Planning] Edit Day';
+
+    constructor(public payload: { dayIndex: number, newDay: Moment }) {
+    }
+}
+
 @Broadcast('/rooms')
 export class AddRoom {
     static readonly type = '[Planning] Add Room';
@@ -80,5 +88,12 @@ export class EditTimeSlot {
     static readonly type = '[Planning] Edit Timeslot';
 
     constructor(public payload: { timeSlotIndex: number, newTime: Time }) {
+    }
+}
+
+export class AttachTopic {
+    static readonly type = '[Planning] Attach to Slot';
+
+    constructor(public payload: { topic: Topic, slotIndex: number }) {
     }
 }

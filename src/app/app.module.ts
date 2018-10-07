@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
@@ -31,6 +32,7 @@ import { StompState } from './state/stomp/stomp.state';
     imports: [
         BrowserModule,
         AppRoutingModule,
+        DragDropModule,
         NgxsModule.forRoot([PlanningState, StompState]),
         NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
         NgxsStompPluginModule.forRoot(),

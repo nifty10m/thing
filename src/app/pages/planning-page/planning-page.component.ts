@@ -1,13 +1,17 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Moment, utc } from 'moment';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs';
 import { Barcamp } from '../../models/barcamp';
 import { SlotType } from '../../models/slot-type';
 import { Time } from '../../models/time';
-import { AddDay, AddRoom, AddTimeSlot, EditRoom, EditTimeSlot } from '../../state/planning/planning.actions';
+import { AddDay, AddRoom, AddTimeSlot, EditRoom, EditTimeSlot, EditDay, AttachTopic } from '../../state/planning/planning.actions';
 import { PlanningState } from '../../state/planning/planning.state';
 import { StompSubscribe } from '../../state/stomp/stomp.actions';
+import { Slot } from '../../models/slot';
+import { map, filter } from 'rxjs/operators';
+import { Topic } from '../../models/topic';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'th-configuration-page',
@@ -29,6 +33,9 @@ export class PlanningPageComponent {
     @Select(PlanningState.rooms)
     rooms: Observable<string[]>;
 
+    @Select(PlanningState.slots)
+    slots: Observable<Slot[]>;
+
     constructor(private store: Store) {
         this.store.dispatch([
             new StompSubscribe({ queueName: '/days/initial' }),
@@ -38,6 +45,39 @@ export class PlanningPageComponent {
             new StompSubscribe({ queueName: '/timeslots/initial' }),
             new StompSubscribe({ queueName: '/timeslots/queue' }),
         ]);
+    }
+
+    findTopic(day: Moment, room: string, time: Time): Observable<Topic> {
+        return this.slots.pipe(
+            map((slots: Slot[]) => slots.find((slot: Slot) => {
+                return day.isSame(slot.day, 'day')
+                    && room === slot.room
+                    && time.start.isSame(slot.time.start, 'minute')
+                    && time.end.isSame(slot.time.end, 'minute');
+            })),
+            filter((slot: Slot) => !!slot),
+            map((slot: Slot) => slot.topic)
+        );
+    }
+
+    findSlotId(day: Moment, room: string, time: Time): Observable<string> {
+        return this.slots.pipe(
+            map((slots: Slot[]) => slots.findIndex((slot: Slot) => {
+                return day.isSame(slot.day, 'day')
+                    && room === slot.room
+                    && time.start.isSame(slot.time.start, 'minute')
+                    && time.end.isSame(slot.time.end, 'minute');
+            })),
+            map((index: number) => `slot-${index}`)
+        );
+    }
+
+    topicDropped(dropEvent: CdkDragDrop<Topic[]>) {
+        console.log(dropEvent);
+        const { container, previousContainer, previousIndex } = dropEvent;
+        const slotIndex = Number.parseInt(container.id.substr(5));
+        const topic = previousContainer.data[previousIndex];
+        this.store.dispatch(new AttachTopic({ topic, slotIndex }));
     }
 
     addDay() {
@@ -68,6 +108,14 @@ export class PlanningPageComponent {
         }));
     }
 
+    dayChange(event: any, day: Moment, dayIndex: number) {
+        const newDay = utc(event.target.innerText, 'DD.MM');
+        newDay.year(day.get('year'));
+        if (newDay && !newDay.isSame(day, 'day')) {
+            this.store.dispatch(new EditDay({ dayIndex, newDay }));
+        }
+    }
+
     roomNameChange(event: any, roomName: string, roomIndex: number) {
         const newName = event.target.innerText;
         if (newName && newName !== roomName) {
@@ -77,14 +125,14 @@ export class PlanningPageComponent {
 
     startTimeChange(event: any, { start, ...rest }: Time, timeSlotIndex: number) {
         const time = utc(event.target.innerText, 'H:mm');
-        if (time && !time.isSame(start)) {
+        if (time && !time.isSame(start, 'minute')) {
             this.store.dispatch(new EditTimeSlot({ timeSlotIndex, newTime: { start: time, ...rest } }));
         }
     }
 
     endTimeChange(event: any, { end, ...rest }: Time, timeSlotIndex: number) {
         const time = utc(event.target.innerText, 'H:mm').local();
-        if (time && !time.isSame(end)) {
+        if (time && !time.isSame(end, 'minute')) {
             this.store.dispatch(new EditTimeSlot({ timeSlotIndex, newTime: { end: time, ...rest } }));
         }
     }

@@ -1,5 +1,4 @@
 import { Moment } from 'moment';
-import { SlotType } from './slot-type';
 import { Time } from './time';
 import { Topic } from './topic';
 

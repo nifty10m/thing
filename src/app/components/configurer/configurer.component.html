@@ -1,16 +1,18 @@
 <form [formGroup]="topicForm" (submit)="addTopic()">
   <h3>Neues Thema</h3>
   <fieldset>
-    <input id="title" type="text" formControlName="topicTitle">
+    <input id="title" type="text" formControlName="topicTitle" placeholder="Titel">
     <label for="title">Titel</label>
   </fieldset>
   <fieldset>
-    <textarea id="description" formControlName="topicDescription"></textarea>
+    <textarea id="description" formControlName="topicDescription" placeholder="Beschreibung"></textarea>
     <label for="description">Beschreibung</label>
   </fieldset>
-  <button type="submit" [disabled]="topicForm.invalid">
-    Erstellen
-  </button>
+  <fieldset class="actions">
+    <button type="submit" [disabled]="topicForm.invalid">
+      Erstellen
+    </button>
+  </fieldset>
 </form>
 <ul>
   <li *ngFor="let topic of topics | async">

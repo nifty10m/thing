@@ -1,11 +1,11 @@
 <form [formGroup]="topicForm" (submit)="addTopic()">
   <h3>Neues Thema</h3>
   <fieldset>
-    <input id="title" type="text" formControlName="topicTitle">
+    <input id="title" type="text" formControlName="topicTitle" placeholder="Titel">
     <label for="title">Titel</label>
   </fieldset>
   <fieldset>
-    <textarea id="description" formControlName="topicDescription"></textarea>
+    <textarea id="description" formControlName="topicDescription" placeholder="Beschreibung"></textarea>
     <label for="description">Beschreibung</label>
   </fieldset>
   <fieldset class="actions">

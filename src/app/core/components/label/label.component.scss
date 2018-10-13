@@ -10,8 +10,8 @@
     z-index: 10;
 
     div {
-        background: white;
-        color: $font-color;
+        background: transparent;
+        color: rgba($font-color, .54);
         display: inline-block;
         font-family: Mukta, 'sans-serif';
         font-size: 14px;

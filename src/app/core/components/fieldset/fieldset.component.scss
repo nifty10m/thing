@@ -22,12 +22,20 @@ fieldset {
 
     input,
     textarea {
+        &::placeholder {
+            color: transparent;
+        }
+
         &:focus,
-        &.filled {
+        &:not(:placeholder-shown) {
             & + label div {
-                color: $primary !important;
+                background: white !important;
                 transform: translateY(-18px);
             }
+        }
+
+        &:focus + label div {
+            color: $primary !important;
         }
     }
 }
